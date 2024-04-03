@@ -7,7 +7,11 @@ public abstract class Entite extends Obj {
     protected boolean deactive;
     protected Case c;
 
-    public Entite(Jeu _jeu, Case _c) { super(_jeu); c = _c; c.setEntite(this);}
+    public Entite(Jeu _jeu, Case _c) {
+        super(_jeu);
+        c = _c;
+        deactive = false;
+        c.setEntite(this);}
 
     public void quitterCase() {
         c = null;
@@ -33,6 +37,10 @@ public abstract class Entite extends Obj {
     public boolean avancerDirectionChoisie(Direction d) {
 
         return jeu.deplacerEntite(this, d);
+    }
+
+    public void setDeactive(boolean deactive) {
+        this.deactive = deactive;
     }
 
     public boolean isDeactive() {
