@@ -42,6 +42,8 @@ public class VueControleur extends JFrame implements Observer {
     private ImageIcon icoCaseObj4;
     private ImageIcon icoBlocObj5;
     private ImageIcon icoCaseObj5;
+    private ImageIcon icoPiege;
+    private ImageIcon icoGlace;
 
 
     private JLabel[][] tabJLabel; // cases graphique (au moment du rafraichissement, chaque case va être associée à une icône, suivant ce qui est présent dans le modèle)
@@ -98,6 +100,8 @@ public class VueControleur extends JFrame implements Observer {
         icoCaseObj4 = chargerIcone("Images/v2case_objectif4.png");
         icoBlocObj5 = chargerIcone("Images/v2bloc_objectif5.png");
         icoCaseObj5 = chargerIcone("Images/v2case_objectif5.png");
+        icoPiege = chargerIcone("Images/v2piege.png");
+        icoGlace = chargerIcone("Images/v2glace.png");
     }
 
     private ImageIcon chargerIcone(String urlIcone) {
@@ -116,7 +120,7 @@ public class VueControleur extends JFrame implements Observer {
 
     private void placerLesComposantsGraphiques() {
         setTitle("Sokoban");
-        setSize(sizeX*40, sizeY*46);
+        setSize(sizeX*40, sizeY*43);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // permet de terminer l'application à la fermeture de la fenêtre
 
         JComponent grilleJLabels = new JPanel(new GridLayout(sizeY, sizeX)); // grilleJLabels va contenir les cases graphiques et les positionner sous la forme d'une grille
@@ -196,15 +200,14 @@ public class VueControleur extends JFrame implements Observer {
                                     break;
                             }
                         } else if (jeu.getGrille()[x][y] instanceof Vide) {
-
                             tabJLabel[x][y].setIcon(icoVide);
+                        } else if (jeu.getGrille()[x][y] instanceof Piege) {
+                            tabJLabel[x][y].setIcon(icoPiege);
+                        } else if (jeu.getGrille()[x][y] instanceof Glace) {
+                            tabJLabel[x][y].setIcon(icoGlace);
                         }
                     }
-
-
-
                 }
-
             }
         }
     }

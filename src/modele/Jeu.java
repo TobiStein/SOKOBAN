@@ -82,7 +82,7 @@ public class Jeu extends Observable {
         }
 
         // ajout les murs
-        List<Level.Coordinate> listeMur = level.getGetListCoordinateWall();
+        List<Level.Coordinate> listeMur = level.getGetListCoordinateMur();
         for (int m = 0; m < listeMur.size(); m++){
             addCase(new Mur(this), listeMur.get(m).getX(), listeMur.get(m).getY());
         }
@@ -100,11 +100,32 @@ public class Jeu extends Observable {
             listeBlocObjectif[i] = new BlocObjectif(this, grilleEntites[listBlocObjectifCoor.get(i).getX()][listBlocObjectifCoor.get(i).getY()], listBlocObjectifCoor.get(i).getId());
         }
 
+        // ajout des blocs Normaux s'il y en a
         List<Level.Coordinate> listBlocCoor = level.getListCoordinateBloc();
 
         if (listBlocCoor.size() != 0) {
             for (int i = 0; i < listBlocCoor.size(); i++){
                 new Bloc(this, grilleEntites[listBlocCoor.get(i).getX()][listBlocCoor.get(i).getY()]);
+            }
+        }
+
+        // ajout des blocs Pièges s'il y en a
+        List<Level.Coordinate> listPiegeCoor = level.getListCoordinatePiege();
+
+        if (listPiegeCoor.size() != 0) {
+            for (int i = 0; i < listPiegeCoor.size(); i++){
+                Piege piege = new Piege(this);
+                addCase(piege, listPiegeCoor.get(i).getX(), listPiegeCoor.get(i).getY());
+            }
+        }
+
+        // ajout des blocs Glaces s'il y en a
+        List<Level.Coordinate> listGlaceCoor = level.getListCoordinateGlace();
+
+        if (listGlaceCoor.size() != 0) {
+            for (int i = 0; i < listGlaceCoor.size(); i++){
+                Glace glace = new Glace(this);
+                addCase(glace, listGlaceCoor.get(i).getX(), listGlaceCoor.get(i).getY());
             }
         }
 
@@ -136,7 +157,6 @@ public class Jeu extends Observable {
 
             // si la case est libérée
             if (caseALaPosition(pCible).peutEtreParcouru()) {
-                e.getCase().quitterLaCase();
                 caseALaPosition(pCible).entrerSurLaCase(e);
 
             } else {

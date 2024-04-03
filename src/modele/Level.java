@@ -1,9 +1,6 @@
 package modele;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 public class Level {
@@ -17,6 +14,9 @@ public class Level {
     @JsonProperty("numObjectif")
     private int numObjectif;
 
+    @JsonProperty("pasMinimum")
+    private int pasMinimum;
+
     @JsonProperty("hero")
     private Coordinate hero;
 
@@ -29,8 +29,14 @@ public class Level {
     @JsonProperty("Bloc")
     private List<Coordinate> listCoordinateBloc;
 
-    @JsonProperty("Wall")
-    private List<Coordinate> listCoordinateWall;
+    @JsonProperty("Mur")
+    private List<Coordinate> listCoordinateMur;
+
+    @JsonProperty("Piege")
+    private List<Coordinate> listCoordinatePiege;
+
+    @JsonProperty("Glace")
+    private List<Coordinate> listCoordinateGlace;
 
     public static class Coordinate {
         @JsonProperty("x")
@@ -69,6 +75,10 @@ public class Level {
         return numObjectif;
     }
 
+    public int getPasMinimum() {
+        return pasMinimum;
+    }
+
     public Coordinate getHero() {
         return hero;
     }
@@ -85,7 +95,15 @@ public class Level {
         return listCoordinateBloc;
     }
 
-    public List<Coordinate> getGetListCoordinateWall() {
-        return listCoordinateWall;
+    public List<Coordinate> getGetListCoordinateMur() {
+        return listCoordinateMur;
+    }
+
+    public List<Coordinate> getListCoordinatePiege() {
+        return listCoordinatePiege;
+    }
+
+    public List<Coordinate> getListCoordinateGlace() {
+        return listCoordinateGlace;
     }
 }
