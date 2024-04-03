@@ -1,5 +1,9 @@
 package VueControleur;
 
+import modele.*;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -10,11 +14,6 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.swing.*;
-
-
-import modele.*;
 
 
 /** Cette classe a deux fonctions :
@@ -61,7 +60,8 @@ public class VueControleur extends JFrame implements Observer {
 
         mettreAJourAffichage();
         if (jeu.finDePartie()) {
-            System.out.println("FIN DE PARTIE");
+            System.out.println("FIN DE");
+            grilleMurFinDePartie();
         }
     }
 
@@ -229,5 +229,65 @@ public class VueControleur extends JFrame implements Observer {
                 }); 
         */
 
+    }
+
+    public void reinitialiserJeu() {
+        getContentPane().removeAll();
+
+        jeu = new Jeu(); // Recréer une instance de Jeu
+        chargerLesIcones(); // met les images dans les attributs icon
+        placerLesComposantsGraphiques();
+        ajouterEcouteurClavier();
+        jeu.addObserver(this);
+        mettreAJourAffichage();
+        if (jeu.finDePartie()) {
+            grilleMurFinDePartie(); // Afficher l'écran de fin de partie si le jeu est terminé
+        }
+    }
+
+    public void grilleMurFinDePartie() {
+        JPanel panel = new JPanel(null);
+
+        JLabel labelFin = new JLabel("Niveau gagné!");
+        labelFin.setFont(new Font("Arial", Font.BOLD, 24));
+        panel.setBackground(Color.GRAY);
+        panel.setOpaque(true);
+
+        int labelWidth = labelFin.getPreferredSize().width;
+        int labelHeight = labelFin.getPreferredSize().height;
+        int labelX = (getWidth() - labelWidth)/2; // position horizontale
+        int labelY = (getHeight() - labelHeight)/4; // position verticale
+
+        labelFin.setBounds(labelX, labelY, labelWidth, labelHeight);
+
+        JButton nSuivant = new JButton("niveau suivant");
+        JButton rejouer = new JButton("rejouer");
+
+        int boutonW = nSuivant.getPreferredSize().width;
+        int boutonH = nSuivant.getPreferredSize().height;
+        int boutonWNS = nSuivant.getPreferredSize().width + 40; //pour le bouton suivant (texte plus long doc plus grand)
+
+        int boutonX = (getWidth() - boutonW)/2;
+        int boutonY = labelY +50;
+        int boutonXNS = (getWidth() - boutonWNS)/2;
+
+        nSuivant.setBounds(boutonXNS, boutonY, boutonWNS, boutonH);
+        rejouer.setBounds(boutonX, (boutonY + 30), boutonW, boutonH);
+
+        nSuivant.addActionListener(e ->{
+            System.out.println("hello 2");
+        });
+
+        rejouer.addActionListener(e ->{
+            reinitialiserJeu();
+        });
+
+        panel.add(labelFin);
+        panel.add(rejouer);
+        panel.add(nSuivant);
+
+        add(panel);
+        revalidate();
+        repaint();
     }
 }
