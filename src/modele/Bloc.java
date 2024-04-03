@@ -11,4 +11,5 @@ public class Bloc extends Entite {
         return jeu.deplacerEntite(this, d);
     }
 
+
 }

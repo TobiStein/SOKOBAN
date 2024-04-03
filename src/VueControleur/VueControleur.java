@@ -119,6 +119,9 @@ public class VueControleur extends JFrame implements Observer {
     }
 
     private void placerLesComposantsGraphiques() {
+
+        getContentPane().removeAll();
+
         setTitle("Sokoban");
         setSize(sizeX*40, sizeY*43);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // permet de terminer l'application à la fermeture de la fenêtre
@@ -142,7 +145,6 @@ public class VueControleur extends JFrame implements Observer {
      * Il y a une grille du côté du modèle ( jeu.getGrille() ) et une grille du côté de la vue (tabJLabel)
      */
     private void mettreAJourAffichage() {
-
 
 
         for (int x = 0; x < sizeX; x++) {
@@ -217,6 +219,7 @@ public class VueControleur extends JFrame implements Observer {
         mettreAJourAffichage();
         if (jeu.finDePartie()) {
             System.out.println("FIN DE PARTIE");
+            grilleMurFinDePartie();
         }
         /*
 
@@ -235,31 +238,38 @@ public class VueControleur extends JFrame implements Observer {
     }
 
     public void reinitialiserJeu() {
-        getContentPane().removeAll();
-
-        jeu = new Jeu(); // Recréer une instance de Jeu
-        chargerLesIcones(); // met les images dans les attributs icon
-        placerLesComposantsGraphiques();
-        ajouterEcouteurClavier();
-        jeu.addObserver(this);
-        mettreAJourAffichage();
-        if (jeu.finDePartie()) {
-            grilleMurFinDePartie(); // Afficher l'écran de fin de partie si le jeu est terminé
-        }
+        int niveau = jeu.getNiveau();
+        Jeu jeu= new Jeu(niveau);
+        VueControleur v = new VueControleur(jeu);
+        v.setVisible(true);
     }
 
+    public void niveauSuivant() {
+        int niveau = jeu.getNiveau();
+        Jeu jeu= new Jeu(niveau+1);
+        VueControleur v = new VueControleur(jeu);
+        v.setVisible(true);
+//        int n = jeu.getNiveau();
+//        jeu.updateNiveau(n);
+    }/*créer une fonction dans jeu pour changer le niveau, "jeu.chargerNsuivant(n)"; au lieu de faire un new etc... à la fin de la fonction chargerNsuivant on
+    fait un setC..(observable) ?? et on fait un remove.all sur le jframe dans le chargement des composantes. ; on gere ca avec une boite de dialogue, plus simple.*/
+
+
+
+
     public void grilleMurFinDePartie() {
+        getContentPane().removeAll();
         JPanel panel = new JPanel(null);
 
-        JLabel labelFin = new JLabel("Niveau gagné!");
+        JLabel labelFin = new JLabel("Niveau " + jeu.getNiveau() + " gagné!");
         labelFin.setFont(new Font("Arial", Font.BOLD, 24));
         panel.setBackground(Color.GRAY);
         panel.setOpaque(true);
 
         int labelWidth = labelFin.getPreferredSize().width;
         int labelHeight = labelFin.getPreferredSize().height;
-        int labelX = (getWidth() - labelWidth)/2; // position horizontale
-        int labelY = (getHeight() - labelHeight)/4; // position verticale
+        int labelX = (getWidth() - labelWidth) / 2; // position horizontale
+        int labelY = (getHeight() - labelHeight) / 4; // position verticale
 
         labelFin.setBounds(labelX, labelY, labelWidth, labelHeight);
 
@@ -270,19 +280,21 @@ public class VueControleur extends JFrame implements Observer {
         int boutonH = nSuivant.getPreferredSize().height;
         int boutonWNS = nSuivant.getPreferredSize().width + 40; //pour le bouton suivant (texte plus long doc plus grand)
 
-        int boutonX = (getWidth() - boutonW)/2;
-        int boutonY = labelY +50;
-        int boutonXNS = (getWidth() - boutonWNS)/2;
+        int boutonX = (getWidth() - boutonW) / 2;
+        int boutonY = labelY + 50;
+        int boutonXNS = (getWidth() - boutonWNS) / 2;
 
         nSuivant.setBounds(boutonXNS, boutonY, boutonWNS, boutonH);
         rejouer.setBounds(boutonX, (boutonY + 30), boutonW, boutonH);
 
-        nSuivant.addActionListener(e ->{
-            System.out.println("hello 2");
+        nSuivant.addActionListener(e -> {
+            niveauSuivant();
+            dispose();
         });
 
-        rejouer.addActionListener(e ->{
+        rejouer.addActionListener(e -> {
             reinitialiserJeu();
+            dispose();
         });
 
         panel.add(labelFin);

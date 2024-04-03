@@ -35,4 +35,6 @@ public abstract class Entite extends Obj {
         return jeu.deplacerEntite(this, d);
     }
 
+    public void glisser(Direction d) { jeu.deplacerEntite(this, d);}
+
 }

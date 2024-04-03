@@ -29,7 +29,7 @@ public class Jeu extends Observable {
 
     private HashMap<Case, Point> map = new  HashMap<Case, Point>(); // permet de récupérer la position d'une case à partir de sa référence
     private Case[][] grilleEntites; // permet de récupérer une case à partir de ses coordonnées
-
+    private int niveau;
 
 
     public Jeu() {
@@ -38,18 +38,20 @@ public class Jeu extends Observable {
             SIZE_X = level.getSizeX();
             SIZE_Y = level.getSizeY();
             grilleEntites = new Case[SIZE_X][SIZE_Y];
+            niveau = 1;
             initialisationNiveau(level);
         } catch (NullPointerException e) {
             System.out.println("Impossible de charger niveau");
         }
     }
 
-    public Jeu(int niveau) {
+    public Jeu(int n) {
         try {
-            Level level = chargerNiveauJson("levels/level"+niveau+".json");
+            Level level = chargerNiveauJson("levels/level"+n+".json");
             SIZE_X = level.getSizeX();
             SIZE_Y = level.getSizeY();
             grilleEntites = new Case[SIZE_X][SIZE_Y];
+            niveau = n;
             initialisationNiveau(level);
         } catch (NullPointerException e) {
             System.out.println("Impossible de charger niveau");
@@ -137,8 +139,6 @@ public class Jeu extends Observable {
         map.put(e, new Point(x, y));
     }
     
-
-    
     /** Si le déplacement de l'entité est autorisé (pas de mur ou autre entité), il est réalisé
      * Sinon, rien n'est fait.
      */
@@ -151,13 +151,18 @@ public class Jeu extends Observable {
 
         if (contenuDansGrille(pCible)) {
             Entite eCible = caseALaPosition(pCible).getEntite();
-            if (eCible != null) {
+            if (eCible != null) { //si j'ai un bloc
                 eCible.pousser(d);
+
             }
 
             // si la case est libérée
             if (caseALaPosition(pCible).peutEtreParcouru()) {
                 caseALaPosition(pCible).entrerSurLaCase(e);
+                if (caseALaPosition(pCible) instanceof Glace){
+                    eCible.glisser(d);
+                    pCible = calculerPointCible(pCible, d);
+                }
 
             } else {
                 retour = false;
@@ -220,5 +225,19 @@ public class Jeu extends Observable {
             }
         }
         return true;
+    }
+
+    public int getNiveau(){
+        return niveau;
+    }
+
+    public void updateNiveau(int n){
+        niveau = n+1;
+        Level level = chargerNiveauJson("levels/level"+niveau+".json");
+        SIZE_X = level.getSizeX();
+        SIZE_Y = level.getSizeY();
+        initialisationNiveau(level);
+        setChanged();
+        notifyObservers();
     }
 }

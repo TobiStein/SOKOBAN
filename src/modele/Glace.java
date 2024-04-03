@@ -11,4 +11,9 @@ public class Glace extends Case{
         return e == null;
     }
 
+//    public boolean glisser(Direction d) {
+//        return jeu.deplacerEntite(this.getEntite(), d);
+//    }
+
+
 }
