@@ -8,6 +8,14 @@ public class BlocObjectif extends Bloc{
         id = _id;
     }
 
+    public boolean pousser(Direction d) {
+        if (!this.isDesactive()) {
+            return jeu.deplacerEntite(this, d);
+        } else {
+            return false;
+        }
+    }
+
     public int getId() {
         return id;
     }

@@ -4,7 +4,7 @@ package modele;
  * Entités amenées à bouger
  */
 public abstract class Entite extends Obj {
-
+    protected boolean deactive;
     protected Case c;
 
     public Entite(Jeu _jeu, Case _c) { super(_jeu); c = _c; c.setEntite(this);}
@@ -35,6 +35,7 @@ public abstract class Entite extends Obj {
         return jeu.deplacerEntite(this, d);
     }
 
-    public void glisser(Direction d) { jeu.deplacerEntite(this, d);}
-
+    public boolean isDeactive() {
+        return deactive;
+    }
 }

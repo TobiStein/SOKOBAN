@@ -34,7 +34,7 @@ public class Jeu extends Observable {
 
     public Jeu() {
         try {
-            Level level = chargerNiveauJson("levels/level1.json");
+            Level level = chargerNiveauJson("levels/level4.json");
             SIZE_X = level.getSizeX();
             SIZE_Y = level.getSizeY();
             grilleEntites = new Case[SIZE_X][SIZE_Y];
@@ -171,7 +171,6 @@ public class Jeu extends Observable {
         } else {
             retour = false;
         }
-
         return retour;
     }
     

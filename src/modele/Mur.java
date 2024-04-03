@@ -7,4 +7,5 @@ public class Mur extends Case {
     public boolean peutEtreParcouru() {
         return false;
     }
+
 }

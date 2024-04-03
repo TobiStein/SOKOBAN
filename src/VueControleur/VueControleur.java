@@ -42,7 +42,9 @@ public class VueControleur extends JFrame implements Observer {
     private ImageIcon icoCaseObj4;
     private ImageIcon icoBlocObj5;
     private ImageIcon icoCaseObj5;
-    private ImageIcon icoPiege;
+    private ImageIcon icoPiegeferme;
+    private ImageIcon icoPiegeouvert;
+    private ImageIcon icoPiegedeactive;
     private ImageIcon icoGlace;
 
 
@@ -61,10 +63,6 @@ public class VueControleur extends JFrame implements Observer {
         jeu.addObserver(this);
 
         mettreAJourAffichage();
-        if (jeu.finDePartie()) {
-            System.out.println("FIN DE");
-            grilleMurFinDePartie();
-        }
     }
 
     private void ajouterEcouteurClavier() {
@@ -100,8 +98,10 @@ public class VueControleur extends JFrame implements Observer {
         icoCaseObj4 = chargerIcone("Images/v2case_objectif4.png");
         icoBlocObj5 = chargerIcone("Images/v2bloc_objectif5.png");
         icoCaseObj5 = chargerIcone("Images/v2case_objectif5.png");
-        icoPiege = chargerIcone("Images/v2piege.png");
+        icoPiegeferme = chargerIcone("Images/v2piegeferme.png");
+        icoPiegeouvert = chargerIcone("Images/v2piegeouvert.png");
         icoGlace = chargerIcone("Images/v2glace.png");
+        icoPiegedeactive = chargerIcone("Images/v2piegedeactive.png");
     }
 
     private ImageIcon chargerIcone(String urlIcone) {
@@ -156,7 +156,7 @@ public class VueControleur extends JFrame implements Observer {
 
                     Entite e = c.getEntite();
 
-                    if (e!= null) {
+                    if (e!= null && !e.isDesactive()) {
                         if (c.getEntite() instanceof Heros) {
                             tabJLabel[x][y].setIcon(icoHero);
                         } else if (c.getEntite() instanceof BlocObjectif) {
@@ -204,7 +204,15 @@ public class VueControleur extends JFrame implements Observer {
                         } else if (jeu.getGrille()[x][y] instanceof Vide) {
                             tabJLabel[x][y].setIcon(icoVide);
                         } else if (jeu.getGrille()[x][y] instanceof Piege) {
-                            tabJLabel[x][y].setIcon(icoPiege);
+                            if (((Piege) jeu.getGrille()[x][y]).isOuvert()) {
+                                if (((Piege) jeu.getGrille()[x][y]).isDeactive()) {
+                                    tabJLabel[x][y].setIcon(icoPiegedeactive);
+                                } else {
+                                    tabJLabel[x][y].setIcon(icoPiegeouvert);
+                                }
+                            } else {
+                                tabJLabel[x][y].setIcon(icoPiegeferme);
+                            }
                         } else if (jeu.getGrille()[x][y] instanceof Glace) {
                             tabJLabel[x][y].setIcon(icoGlace);
                         }
