@@ -4,13 +4,13 @@ package modele;
  * Entités amenées à bouger
  */
 public abstract class Entite extends Obj {
-    protected boolean deactive;
+    protected boolean desactive;
     protected Case c;
 
     public Entite(Jeu _jeu, Case _c) {
         super(_jeu);
         c = _c;
-        deactive = false;
+        desactive = false;
         c.setEntite(this);}
 
     public void quitterCase() {
@@ -39,11 +39,13 @@ public abstract class Entite extends Obj {
         return jeu.deplacerEntite(this, d);
     }
 
-    public void setDeactive(boolean deactive) {
-        this.deactive = deactive;
+    public void setDesactive(boolean deactive) {
+        this.desactive = deactive;
     }
 
-    public boolean isDeactive() {
-        return deactive;
+    public boolean isDesactive() {
+        return desactive;
     }
+
+    public void glisser(Direction d) { jeu.deplacerEntite(this, d);}
 }
