@@ -158,11 +158,11 @@ public class Jeu extends Observable {
 
             // si la case est libérée
             if (caseALaPosition(pCible).peutEtreParcouru()) {
-                caseALaPosition(pCible).entrerSurLaCase(e);
-                if (caseALaPosition(pCible) instanceof Glace){
-                    eCible.glisser(d);
-                    pCible = calculerPointCible(pCible, d);
-                }
+                caseALaPosition(pCible).entrerSurLaCase(e, d);
+//                if (caseALaPosition(pCible) instanceof Glace){
+//                    eCible.glisser(d);
+//                    pCible = calculerPointCible(pCible, d);
+//                }
 
             } else {
                 retour = false;

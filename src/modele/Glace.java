@@ -11,9 +11,10 @@ public class Glace extends Case{
         return e == null;
     }
 
-//    public boolean glisser(Direction d) {
-//        return jeu.deplacerEntite(this.getEntite(), d);
-//    }
-
+    public boolean entrerSurLaCase(Entite e, Direction d) {
+        super.entrerSurLaCase(e,d);
+        jeu.deplacerEntite(e, d);
+        return true;
+    }
 
 }

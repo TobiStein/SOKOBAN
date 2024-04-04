@@ -22,7 +22,7 @@ public class Piege extends Case{
         }
     }
 
-    public boolean entrerSurLaCase(Entite e) {
+    public boolean entrerSurLaCase(Entite e, Direction d) {
         if(ouvert && !deactive){
             e.setDesactive(true);
             if (e instanceof Bloc || e instanceof  BlocObjectif) {
@@ -30,7 +30,7 @@ public class Piege extends Case{
                 deactive = true;
             }
         }
-        super.entrerSurLaCase(e);
+        super.entrerSurLaCase(e, d);
         return true;
     }
 
