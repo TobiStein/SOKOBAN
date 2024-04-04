@@ -152,7 +152,7 @@ public class Jeu extends Observable {
         if (contenuDansGrille(pCible)) {
             Entite eCible = caseALaPosition(pCible).getEntite();
             if (eCible != null) { //si j'ai un bloc
-                eCible.pousser(d);
+                eCible.pousser(e, d);
 
             }
 

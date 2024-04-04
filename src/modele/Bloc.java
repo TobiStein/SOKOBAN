@@ -7,8 +7,8 @@ public class Bloc extends Entite {
         super(_jeu, c);
     }
 
-    public boolean pousser(Direction d) {
-        if (!this.isDesactive()) {
+    public boolean pousser(Entite e, Direction d) {
+        if (!this.isDesactive() && !(e.getCase() instanceof Glace)) {
             return jeu.deplacerEntite(this, d);
         } else {
             return false;
