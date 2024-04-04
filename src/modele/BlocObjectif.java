@@ -8,8 +8,8 @@ public class BlocObjectif extends Bloc{
         id = _id;
     }
 
-    public boolean pousser(Entite e, Direction d) {
-        if (!this.isDesactive() && !(e.getCase() instanceof Glace)) {
+    public boolean pousser(Direction d) {
+        if (!this.isDesactive()) {
             return jeu.deplacerEntite(this, d);
         } else {
             return false;

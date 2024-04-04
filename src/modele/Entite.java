@@ -29,7 +29,7 @@ public abstract class Entite extends Obj {
         c = _c;
     }
 
-    public boolean pousser(Entite e, Direction d) {
+    public boolean pousser(Direction d) {
         return false;
     }
 

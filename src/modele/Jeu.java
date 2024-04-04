@@ -152,8 +152,17 @@ public class Jeu extends Observable {
         if (contenuDansGrille(pCible)) {
             Entite eCible = caseALaPosition(pCible).getEntite();
             if (eCible != null) { //si j'ai un bloc
-                eCible.pousser(e, d);
-
+                // si on vient d'arrivé sur le bloc
+                if(e.getCase() instanceof Glace && !((Glace) e.getCase()).aPousseDepuisGlace()){
+                    // alors on ne pousse pas le bloc
+                    ((Glace) e.getCase()).setaPousseDepuisGlace(true);
+                } else {
+                    // si on est sur le bloc de glace et que l'on souhaite pousser
+                    if(e.getCase() instanceof Glace){
+                        ((Glace) e.getCase()).setaPousseDepuisGlace(false);
+                    }
+                    eCible.pousser(d);
+                }
             }
 
             // si la case est libérée
