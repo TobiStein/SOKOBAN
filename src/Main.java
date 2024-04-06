@@ -1,5 +1,6 @@
 
 import VueControleur.VueControleur;
+import VueControleur.Menu;
 import modele.Jeu;
 
 /*
@@ -12,8 +13,14 @@ import modele.Jeu;
 public class Main {
     public static void main(String[] args) {
         Jeu jeu = new Jeu(1);
-        
+
         VueControleur vc = new VueControleur(jeu);
+        Menu menu = new Menu(vc);
+        vc.setMenu(menu);
+
+        //Menu menu = new Menu(vc);
+        //vc.setMenu(menu);
+
         vc.setVisible(true);
 
     }
