@@ -4,6 +4,7 @@ import modele.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -48,34 +49,33 @@ public class VueControleur extends JFrame implements Observer {
     private ImageIcon icoGlace;
 
     private ImageIcon Menu;
+    private ImageIcon bouton;
+    private int nbPas;
 
     private JLabel[][] tabJLabel; // cases graphique (au moment du rafraichissement, chaque case va être associée à une icône, suivant ce qui est présent dans le modèle)
-
 
     public VueControleur(Jeu _jeu) {
 
         sizeX = jeu.SIZE_X;
         sizeY = _jeu.SIZE_Y;
         jeu = _jeu;
-        menu = new Menu();
+        nbPas = jeu.getPas();
+        menu = new Menu(this);
 
         chargerLesIcones(); // met les images dans les attributs icon
-
 
         placerLesComposantsGraphiques();
         ajouterEcouteurClavier();
 
         jeu.addObserver(this);
 
-        //afficherMenu();
         mettreAJourAffichage();
-
+        affPanelJeu();
     }
 
     public void setMenu(Menu menu){
         this.menu = menu;
         getContentPane().add(menu, BorderLayout.NORTH);
-
     }
 
     private void ajouterEcouteurClavier() {
@@ -86,15 +86,22 @@ public class VueControleur extends JFrame implements Observer {
 
                     case KeyEvent.VK_LEFT:
                         jeu.deplacerHeros(Direction.gauche);
+                        nbPas++;
                         break;
                     case KeyEvent.VK_RIGHT:
                         jeu.deplacerHeros(Direction.droite);
+                        nbPas++;
+
                         break;
                     case KeyEvent.VK_DOWN:
                         jeu.deplacerHeros(Direction.bas);
+                        nbPas++;
+
                         break;
                     case KeyEvent.VK_UP:
                         jeu.deplacerHeros(Direction.haut);
+                        nbPas++;
+
                         break;
 
 
@@ -124,6 +131,7 @@ public class VueControleur extends JFrame implements Observer {
         icoGlace = chargerIcone("Images/v2glace.png");
         icoPiegedeactive = chargerIcone("Images/v2piegedeactive.png");
         Menu = chargerIcone("Images/SOKOBAN.png");
+        bouton = chargerIcone("Images/button.png");
     }
 
     private ImageIcon chargerIcone(String urlIcone) {
@@ -143,9 +151,9 @@ public class VueControleur extends JFrame implements Observer {
     private void placerLesComposantsGraphiques() {
 
         getContentPane().removeAll();
-
         setTitle("Sokoban");
         setSize(sizeX * 40, sizeY * 43);
+        setBackground(Color.WHITE);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // permet de terminer l'application à la fermeture de la fenêtre
 
         JComponent grilleJLabels = new JPanel(new GridLayout(sizeY, sizeX)); // grilleJLabels va contenir les cases graphiques et les positionner sous la forme d'une grille
@@ -159,7 +167,7 @@ public class VueControleur extends JFrame implements Observer {
                 grilleJLabels.add(jlab);
             }
         }
-        add(grilleJLabels);
+        add(grilleJLabels,BorderLayout.NORTH);
     }
 
 
@@ -250,7 +258,7 @@ public class VueControleur extends JFrame implements Observer {
         mettreAJourAffichage();
         if (jeu.finDePartie()) {
             System.out.println("FIN DE PARTIE");
-            grilleMurFinDePartie();
+            affFinDePartie();
         }
         /*
 
@@ -280,129 +288,61 @@ public class VueControleur extends JFrame implements Observer {
         Jeu jeu = new Jeu(niveau + 1);
         VueControleur v = new VueControleur(jeu);
         v.setVisible(true);
-//        int n = jeu.getNiveau();
-//        jeu.updateNiveau(n);
-    }/*créer une fonction dans jeu pour changer le niveau, "jeu.chargerNsuivant(n)"; au lieu de faire un new etc... à la fin de la fonction chargerNsuivant on
-    fait un setC..(observable) ?? et on fait un remove.all sur le jframe dans le chargement des composantes. ; on gere ca avec une boite de dialogue, plus simple.*/
+    }
 
-
-    public void grilleMurFinDePartie() {
+    public void affFinDePartie() {
         getContentPane().removeAll();
-        JPanel panel = new JPanel(null);
 
-        JLabel labelFin = new JLabel("Niveau " + jeu.getNiveau() + " gagné!");
-        labelFin.setFont(new Font("Arial", Font.BOLD, 24));
-        panel.setBackground(Color.GRAY);
-        panel.setOpaque(true);
+        menu = new Menu(this);
 
-        int labelWidth = labelFin.getPreferredSize().width;
-        int labelHeight = labelFin.getPreferredSize().height;
-        int labelX = (getWidth() - labelWidth) / 2; // position horizontale
-        int labelY = (getHeight() - labelHeight) / 4; // position verticale
-
-        labelFin.setBounds(labelX, labelY, labelWidth, labelHeight);
-
-        JButton nSuivant = new JButton("niveau suivant");
-        JButton rejouer = new JButton("rejouer");
-
-        int boutonW = nSuivant.getPreferredSize().width;
-        int boutonH = nSuivant.getPreferredSize().height;
-        int boutonWNS = nSuivant.getPreferredSize().width + 40; //pour le bouton suivant (texte plus long doc plus grand)
-
-        int boutonX = (getWidth() - boutonW) / 2;
-        int boutonY = labelY + 50;
-        int boutonXNS = (getWidth() - boutonWNS) / 2;
-
-        nSuivant.setBounds(boutonXNS, boutonY, boutonWNS, boutonH);
-        rejouer.setBounds(boutonX, (boutonY + 30), boutonW, boutonH);
-
-        nSuivant.addActionListener(e -> {
-            niveauSuivant();
-            dispose();
-        });
-
-        rejouer.addActionListener(e -> {
-            int i = jeu.getNiveau();
-            reinitialiserJeu(i);
-            dispose();
-        });
-
-        panel.add(labelFin);
-        panel.add(rejouer);
-        panel.add(nSuivant);
-
-        add(panel);
+        add(menu, BorderLayout.NORTH);
         revalidate();
         repaint();
     }
 
-//    public void afficherMenu() {
-//        getContentPane().removeAll();
-//
-//        setTitle("Menu Sokoban");
-//        setSize(350, 300);
-//        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//
-//
-//        JPanel panelMenu = new JPanel();
-//
-//        Image imageFond = Menu.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
-//        ImageIcon imageFondRedimensionnee = new ImageIcon(imageFond);
-//        JLabel labelFond = new JLabel(imageFondRedimensionnee);
-//        labelFond.setBounds(0, 0, getWidth(), getHeight()); // Définir les dimensions pour couvrir toute la fenêtre
-//
-//
-//        JLabel titre = new JLabel("SOKOBAN");
-//        titre.setFont(new Font("Monospace", Font.BOLD, 30));
-//        int titreW = titre.getPreferredSize().width;
-//        int titreH = titre.getPreferredSize().height;
-//        int titreX = (getWidth() - titreW) / 2; // position horizontale
-//        int titreY = (getHeight() - titreH) / 4; // position verticale
-//        titre.setBounds(titreX, titreY, 200, titreH);
-//
-//        JButton boutonNiveau1 = new JButton("Niveau 1");
-//        boutonNiveau1.setBounds((titreX-20), (titreY+50), 92, 26);
-//        boutonNiveau1.addActionListener(e -> {
-//            reinitialiserJeu(1);
-//        });
-//        JButton boutonNiveau2 = new JButton("Niveau 2");
-//        boutonNiveau2.setBounds(titreX+92, (titreY+50), 92, 26);
-//        boutonNiveau2.addActionListener(e -> {
-//            reinitialiserJeu(2);
-//        });
-//        JButton boutonNiveau3 = new JButton("Niveau 3");
-//        boutonNiveau3.setBounds((titreX-20), (titreY+50+26+10), 92, 26);
-//        boutonNiveau3.addActionListener(e -> {
-//            reinitialiserJeu(3);
-//        });
-//        JButton boutonNiveau4 = new JButton("Niveau 4");
-//        boutonNiveau4.setBounds((titreX+92), (titreY+50+26+10), 92, 26);
-//        boutonNiveau4.addActionListener(e -> {
-//            reinitialiserJeu(4);
-//        });
-//        JButton boutonNiveau5 = new JButton("Niveau 5");
-//        boutonNiveau5.setBounds((titreX+33), (titreY+50+26+10+26+10), 92, 26);
-//        boutonNiveau5.addActionListener(e -> {
-//            reinitialiserJeu(5);
-//        });
-//
-//
-//
-//
-//        labelFond.add(boutonNiveau1);
-//        labelFond.add(boutonNiveau2);
-//        labelFond.add(boutonNiveau3);
-//        labelFond.add(boutonNiveau4);
-//        labelFond.add(boutonNiveau5);
-//
-//        labelFond.add(titre);
-//        panelMenu.add(labelFond);
-//
-//        add(panelMenu);
-//        revalidate();
-//        repaint();
-//    }
+    public void affPanelJeu(){
+        getContentPane().setBackground(Color.white);
+        JPanel panelJeu = new JPanel();
+        panelJeu.setLayout(new GridLayout(2,2,20,8));
+        panelJeu.setBackground(Color.WHITE);
 
+        JLabel pas = new JLabel("Pas: "+ nbPas);
+        panelJeu.add(pas);
+
+        Color color = Color.decode("#C28A37");
+        Color colorB = Color.decode("#845723");
+
+        JButton recommencer = new JButton("Recommencer");
+        recommencer.setBackground(color);
+        recommencer.setBorder(new LineBorder(colorB));
+        recommencer.setMargin(new Insets(10,4,2,4));
+        recommencer.addActionListener(e -> {
+            int niveau = jeu.getNiveau();
+            reinitialiserJeu(niveau);
+            dispose();
+        });
+        panelJeu.add(recommencer);
+
+        JLabel pasMin = new JLabel("Pas Minimum: "+ jeu.getPasMin());
+        panelJeu.add(pasMin);
+
+        JButton menu = new JButton("Menu");
+        menu.setBackground(color);
+        menu.setBorder(new LineBorder(colorB));
+        menu.setBorderPainted(true);
+        menu.addActionListener(e -> {
+            affFinDePartie();
+        });
+        panelJeu.add(menu);
+
+        int pHeight= panelJeu.getPreferredSize().height;
+        setSize(getWidth(), getHeight() + pHeight +25);
+        panelJeu.setBorder(BorderFactory.createEmptyBorder(0,0,5,0));
+        getContentPane().add(panelJeu, BorderLayout.SOUTH);
+
+        requestFocus();
+
+    }
 
 }
 

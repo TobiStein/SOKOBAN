@@ -31,14 +31,18 @@ public class Jeu extends Observable {
     private Case[][] grilleEntites; // permet de récupérer une case à partir de ses coordonnées
     private int niveau;
 
+    private Level level;
+    private int pas;
+
 
     public Jeu() {
         try {
-            Level level = chargerNiveauJson("levels/level4.json");
+            level = chargerNiveauJson("levels/level4.json");
             SIZE_X = level.getSizeX();
             SIZE_Y = level.getSizeY();
             grilleEntites = new Case[SIZE_X][SIZE_Y];
             niveau = 1;
+            pas = 0;
             initialisationNiveau(level);
         } catch (NullPointerException e) {
             System.out.println("Impossible de charger niveau");
@@ -47,7 +51,7 @@ public class Jeu extends Observable {
 
     public Jeu(int n) {
         try {
-            Level level = chargerNiveauJson("levels/level"+n+".json");
+            level = chargerNiveauJson("levels/level"+n+".json");
             SIZE_X = level.getSizeX();
             SIZE_Y = level.getSizeY();
             grilleEntites = new Case[SIZE_X][SIZE_Y];
@@ -70,6 +74,8 @@ public class Jeu extends Observable {
 
     public void deplacerHeros(Direction d) {
         heros.avancerDirectionChoisie(d);
+        pas++;
+        System.out.println(pas);
         setChanged(); //
         notifyObservers();
     }
@@ -77,6 +83,7 @@ public class Jeu extends Observable {
     
     private void initialisationNiveau(Level level) {
         // remplit la grille de vide
+        level = level;
         for (int x = 0; x < SIZE_X; x++){
             for (int y = 0; y < SIZE_Y; y++){
                 addCase(new Vide(this), x, y);
@@ -239,9 +246,17 @@ public class Jeu extends Observable {
         return niveau;
     }
 
+    public int getPasMin(){
+        return level.getPasMinimum();
+    }
+
+    public int getPas(){
+        return pas;
+    }
+
     public void updateNiveau(int n){
         niveau = n+1;
-        Level level = chargerNiveauJson("levels/level"+niveau+".json");
+        level = chargerNiveauJson("levels/level"+niveau+".json");
         SIZE_X = level.getSizeX();
         SIZE_Y = level.getSizeY();
         initialisationNiveau(level);

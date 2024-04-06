@@ -3,28 +3,53 @@ package VueControleur;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Menu extends JPanel{
-    private VueControleur controleur;
+    private final VueControleur controleur;
     private JButton[] boutonsNiveaux;
+    private ImageIcon imgFond;
+    private ImageIcon imgTitre;
 
 
 
-    public void Menu(VueControleur controleur){
+    public Menu(VueControleur controleur) {
         this.controleur = controleur;
 
-        setLayout(new GridLayout(0, 1)); // Utilisez GridLayout avec 1 colonne pour les boutons des niveaux
+        setLayout(new BorderLayout());
 
-        // Créer les boutons des niveaux
-        boutonsNiveaux = new JButton[5]; // Supposons que vous avez 5 niveaux
+        imgFond= new ImageIcon("Images/SOKOBAN.png");
+
+        Image imageFond = imgFond.getImage().getScaledInstance(450, 400, Image.SCALE_DEFAULT);
+        ImageIcon image = new ImageIcon(imageFond);
+        JLabel fond = new JLabel(image);
+        fond.setLayout(new GridBagLayout());
+
+        add(fond,BorderLayout.CENTER);
+
+        //Créer les boutons des niveaux
+        JPanel panelBoutons = new JPanel(new GridLayout(0,1,5,5));
+        panelBoutons.setOpaque(false); // Rendre le JPanel transparent
+
+        // Ajout des boutons au JPanel transparent
+        boutonsNiveaux = new JButton[5];
         for (int i = 0; i < boutonsNiveaux.length; i++) {
-            int numeroNiveau = i + 1;
-            boutonsNiveaux[i] = new JButton("Niveau " + numeroNiveau);
+            int num = i + 1;
+            boutonsNiveaux[i] = new JButton("Niveau " + num);
             boutonsNiveaux[i].addActionListener(e -> {
-                controleur.reinitialiserJeu(numeroNiveau);
+                controleur.reinitialiserJeu(num);
+                controleur.dispose();
             });
-            add(boutonsNiveaux[i]);
+            boutonsNiveaux[i].setMargin(new Insets(4, 20, 4, 20));
+
+            panelBoutons.add(boutonsNiveaux[i]);
         }
+        fond.add(panelBoutons);
+
         afficher();
     }
 
