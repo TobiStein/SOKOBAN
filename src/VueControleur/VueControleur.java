@@ -135,7 +135,7 @@ public class VueControleur extends JFrame implements Observer {
         icoPiegedeactive = chargerIcone("Images/v3piegedeactive.png");
         Menu = chargerIcone("Images/SOKOBAN.png");
         bouton = chargerIcone("Images/button.png");
-        imgFinDePartie = chargerIcone("Images/finDePartiepng");
+        imgFinDePartie = chargerIcone("Images/finDePartie.png");
     }
 
     private ImageIcon chargerIcone(String urlIcone) {
@@ -307,12 +307,86 @@ public class VueControleur extends JFrame implements Observer {
         }
     }
     public void affFinDePartie() {
+
         getContentPane().removeAll();
+        setTitle("Fin de partie");
 
+        JPanel panel = new JPanel(new BorderLayout());
+        ImageIcon imgFinDePartie= new ImageIcon("Images/finDePartie.png");
+        JLabel fond = new JLabel(imgFinDePartie);
+        fond.setLayout(new GridLayout(3,0));
 
-        menu = new Menu(this);
+        panel.add(fond, BorderLayout.CENTER);
 
-        add(menu, BorderLayout.NORTH);
+        Color colorF = Color.decode("#9F8F4B");
+        Font fontT = null;
+        try {
+            String fontPath = "fonts/font2.ttf";
+            fontT = Font.createFont(Font.TRUETYPE_FONT, new File(fontPath));
+        } catch (IOException | FontFormatException e) {
+            e.printStackTrace();
+        }
+        fontT = fontT.deriveFont(Font.BOLD, 24);
+
+        JLabel texte = new JLabel("Niveau "+jeu.getNiveau()+" terminé");
+        texte.setFont(fontT);
+        texte.setForeground(colorF);
+        texte.setHorizontalAlignment(SwingConstants.CENTER);
+        fond.add(texte);
+
+        JPanel panS = new JPanel(new GridLayout(4,0));
+        panS.setOpaque(false);
+
+        fontT = fontT.deriveFont(Font.TRUETYPE_FONT, 18);
+        Color vert = Color.decode("#089652");
+        Color rouge = Color.decode("#BF111C");
+
+        JLabel score= new JLabel();
+        score.setFont(fontT);
+        if (score()){
+            score.setText("Vos pas: "+nbPas);
+            score.setForeground(vert);
+        }else{
+            score.setText("Vos pas: "+nbPas);
+            score.setForeground(rouge);
+        }
+        score.setHorizontalAlignment(SwingConstants.CENTER);
+
+        panS.add(score);
+
+        JLabel minimum = new JLabel("Meilleurs pas: "+jeu.getPasMin());
+        minimum.setFont(fontT);
+        minimum.setForeground(Color.black);
+        minimum.setHorizontalAlignment(SwingConstants.CENTER);
+
+        panS.add(minimum);
+
+        JPanel vide = new JPanel();
+        vide.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0)); // Ajout de marges internes (10 pixels au-dessus et en-dessous)
+        vide.setOpaque(false);
+        panS.add(vide);
+
+        JPanel boutonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
+        boutonsPanel.setOpaque(false);
+        JButton rejouer = new JButton("Rejouer");
+        rejouer.addActionListener(e->{
+            reinitialiserJeu(jeu.getNiveau());
+            dispose();
+        });
+        JButton menuA = new JButton("Menu");
+        menuA.addActionListener(e->{
+            menu = new Menu(this);
+            setMenu(menu);
+            //dispose();
+        });
+        boutonsPanel.add(rejouer);
+        boutonsPanel.add(menuA);
+        panS.add(boutonsPanel, BorderLayout.SOUTH);
+
+        fond.add(panS);
+
+        setSize(450,400);
+        add(panel, BorderLayout.NORTH);
         revalidate();
         repaint();
     }
@@ -335,7 +409,6 @@ public class VueControleur extends JFrame implements Observer {
         Color colorB = Color.decode("#845723");
 
         JButton recommencer = new JButton("Recommencer");
-        recommencer.setBackground(color);
         recommencer.setBorder(new LineBorder(colorB));
         recommencer.setMargin(new Insets(10,4,2,4));
         recommencer.addActionListener(e -> {
@@ -350,11 +423,11 @@ public class VueControleur extends JFrame implements Observer {
         panelJeu.add(pasMin);
 
         JButton menu = new JButton("Menu");
-        menu.setBackground(color);
         menu.setBorder(new LineBorder(colorB));
         menu.setBorderPainted(true);
         menu.addActionListener(e -> {
-            affFinDePartie();
+            Menu menu2 = new Menu(this);
+            setMenu(menu2);
         });
         panelJeu.add(menu);
 
