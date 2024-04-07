@@ -115,24 +115,24 @@ public class VueControleur extends JFrame implements Observer {
 
 
     private void chargerLesIcones() {
-        icoHero = chargerIcone("Images/v2hero.png");
-        icoVide = chargerIcone("Images/v2vide.png");
-        icoMur = chargerIcone("Images/v2mur.png");
-        icoBloc = chargerIcone("Images/v2bloc.png");
-        icoBlocObj1 = chargerIcone("Images/v2bloc_objectif1.png");
-        icoCaseObj1 = chargerIcone("Images/v2case_objectif1.png");
-        icoBlocObj2 = chargerIcone("Images/v2bloc_objectif2.png");
-        icoCaseObj2 = chargerIcone("Images/v2case_objectif2.png");
-        icoBlocObj3 = chargerIcone("Images/v2bloc_objectif3.png");
-        icoCaseObj3 = chargerIcone("Images/v2case_objectif3.png");
-        icoBlocObj4 = chargerIcone("Images/v2bloc_objectif4.png");
-        icoCaseObj4 = chargerIcone("Images/v2case_objectif4.png");
-        icoBlocObj5 = chargerIcone("Images/v2bloc_objectif5.png");
-        icoCaseObj5 = chargerIcone("Images/v2case_objectif5.png");
-        icoPiegeferme = chargerIcone("Images/v2piegeferme.png");
-        icoPiegeouvert = chargerIcone("Images/v2piegeouvert.png");
+        icoHero = chargerIcone("Images/v3hero1.png");
+        icoVide = chargerIcone("Images/v3sol.png");
+        icoMur = chargerIcone("Images/v3mur.png");
+        icoBloc = chargerIcone("Images/v3bloc.png");
+        icoBlocObj1 = chargerIcone("Images/v3bloc_objectif1.png");
+        icoCaseObj1 = chargerIcone("Images/v3case_objectif1.png");
+        icoBlocObj2 = chargerIcone("Images/v3bloc_objectif2.png");
+        icoCaseObj2 = chargerIcone("Images/v3case_objectif2.png");
+        icoBlocObj3 = chargerIcone("Images/v3bloc_objectif3.png");
+        icoCaseObj3 = chargerIcone("Images/v3case_objectif3.png");
+        icoBlocObj4 = chargerIcone("Images/v3bloc_objectif4.png");
+        icoCaseObj4 = chargerIcone("Images/v3case_objectif4.png");
+        icoBlocObj5 = chargerIcone("Images/v3bloc_objectif5.png");
+        icoCaseObj5 = chargerIcone("Images/v3case_objectif5.png");
+        icoPiegeferme = chargerIcone("Images/v3piegeferme.png");
+        icoPiegeouvert = chargerIcone("Images/v3piegeouvert.png");
         icoGlace = chargerIcone("Images/v2glace.png");
-        icoPiegedeactive = chargerIcone("Images/v2piegedeactive.png");
+        icoPiegedeactive = chargerIcone("Images/v3piegedeactive.png");
         Menu = chargerIcone("Images/SOKOBAN.png");
         bouton = chargerIcone("Images/button.png");
         imgFinDePartie = chargerIcone("Images/finDePartiepng");
