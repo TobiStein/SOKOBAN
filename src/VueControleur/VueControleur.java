@@ -6,6 +6,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -50,6 +52,7 @@ public class VueControleur extends JFrame implements Observer {
 
     private ImageIcon Menu;
     private ImageIcon bouton;
+    private ImageIcon imgFinDePartie;
     private int nbPas;
 
     private JLabel[][] tabJLabel; // cases graphique (au moment du rafraichissement, chaque case va être associée à une icône, suivant ce qui est présent dans le modèle)
@@ -132,6 +135,7 @@ public class VueControleur extends JFrame implements Observer {
         icoPiegedeactive = chargerIcone("Images/v2piegedeactive.png");
         Menu = chargerIcone("Images/SOKOBAN.png");
         bouton = chargerIcone("Images/button.png");
+        imgFinDePartie = chargerIcone("Images/finDePartiepng");
     }
 
     private ImageIcon chargerIcone(String urlIcone) {
@@ -153,7 +157,6 @@ public class VueControleur extends JFrame implements Observer {
         getContentPane().removeAll();
         setTitle("Sokoban");
         setSize(sizeX * 40, sizeY * 43);
-        setBackground(Color.WHITE);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // permet de terminer l'application à la fermeture de la fenêtre
 
         JComponent grilleJLabels = new JPanel(new GridLayout(sizeY, sizeX)); // grilleJLabels va contenir les cases graphiques et les positionner sous la forme d'une grille
@@ -175,8 +178,6 @@ public class VueControleur extends JFrame implements Observer {
      * Il y a une grille du côté du modèle ( jeu.getGrille() ) et une grille du côté de la vue (tabJLabel)
      */
     private void mettreAJourAffichage() {
-
-
         for (int x = 0; x < sizeX; x++) {
             for (int y = 0; y < sizeY; y++) {
 
@@ -259,6 +260,13 @@ public class VueControleur extends JFrame implements Observer {
         if (jeu.finDePartie()) {
             System.out.println("FIN DE PARTIE");
             affFinDePartie();
+//            Timer timer = new Timer(2000, new ActionListener() {
+//                public void actionPerformed(ActionEvent e) {
+//                    affFinDePartie();
+//                }
+//            });
+//            timer.setRepeats(false); // Ne se répète pas
+//            timer.start(); // Démarrer le timer
         }
         /*
 
@@ -277,7 +285,6 @@ public class VueControleur extends JFrame implements Observer {
     }
 
     public void reinitialiserJeu(int i) {
-        //int niveau = jeu.getNiveau();
         Jeu jeu = new Jeu(i);
         VueControleur v = new VueControleur(jeu);
         v.setVisible(true);
@@ -290,8 +297,18 @@ public class VueControleur extends JFrame implements Observer {
         v.setVisible(true);
     }
 
+    public boolean score(){
+        int pasMin = jeu.getPasMin();
+        if(nbPas>pasMin){
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
     public void affFinDePartie() {
         getContentPane().removeAll();
+
 
         menu = new Menu(this);
 
@@ -307,7 +324,12 @@ public class VueControleur extends JFrame implements Observer {
         panelJeu.setBackground(Color.WHITE);
 
         JLabel pas = new JLabel("Pas: "+ nbPas);
+        pas.setFont(new Font("Monospace", Font.ITALIC+Font.BOLD, 14));
         panelJeu.add(pas);
+
+        jeu.addObserver((o, arg) ->{
+            pas.setText("Pas: " + jeu.getPas());
+        });
 
         Color color = Color.decode("#C28A37");
         Color colorB = Color.decode("#845723");
@@ -324,6 +346,7 @@ public class VueControleur extends JFrame implements Observer {
         panelJeu.add(recommencer);
 
         JLabel pasMin = new JLabel("Pas Minimum: "+ jeu.getPasMin());
+        pasMin.setFont(new Font("Monospace", Font.ITALIC, 14));
         panelJeu.add(pasMin);
 
         JButton menu = new JButton("Menu");

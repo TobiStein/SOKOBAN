@@ -18,9 +18,6 @@ public class Main {
         Menu menu = new Menu(vc);
         vc.setMenu(menu);
 
-        //Menu menu = new Menu(vc);
-        //vc.setMenu(menu);
-
         vc.setVisible(true);
 
     }
