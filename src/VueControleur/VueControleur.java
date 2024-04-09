@@ -253,34 +253,20 @@ public class VueControleur extends JFrame implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-
-        mettreAJourAffichage();
-        if (jeu.finDePartie()) {
-            nbPas++;
-            System.out.println("FIN DE PARTIE");
-            affFinDePartie();
-//            Timer timer = new Timer(2000, new ActionListener() {
-//                public void actionPerformed(ActionEvent e) {
-//                    affFinDePartie();
-//                }
-//            });
-//            timer.setRepeats(false); // Ne se répète pas
-//            timer.start(); // Démarrer le timer
-        }
-        /*
-
         // récupérer le processus graphique pour rafraichir
         // (normalement, à l'inverse, a l'appel du modèle depuis le contrôleur, utiliser un autre processus, voir classe Executor)
 
-
         SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        mettreAJourAffichage();
-                    }
-                });
-        */
-
+            @Override
+            public void run() {
+                mettreAJourAffichage();
+                if (jeu.finDePartie()) {
+                    nbPas = jeu.getPas();
+                    System.out.println("FIN DE PARTIE");
+                    affFinDePartie();
+                }
+            }
+        });
     }
 
     public void reinitialiserJeu(int i) {
@@ -298,6 +284,7 @@ public class VueControleur extends JFrame implements Observer {
 
     public boolean score(){
         int pasMin = jeu.getPasMin();
+        System.out.println("Nombre de pas dans score : "+nbPas);
         if(nbPas>pasMin){
             return false;
         }
@@ -321,7 +308,7 @@ public class VueControleur extends JFrame implements Observer {
         Color colorF = Color.decode("#9F8F4B");
         Font fontT = null;
         try {
-            String fontPath = "fonts/font2.ttf";
+            String fontPath = "Fonts/font2.ttf";
             fontT = Font.createFont(Font.TRUETYPE_FONT, new File(fontPath));
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
@@ -343,7 +330,7 @@ public class VueControleur extends JFrame implements Observer {
 
         JLabel score= new JLabel();
         score.setFont(fontT);
-        if (score()){
+        if (this.score()){
             score.setText("Vos pas: "+jeu.getPas());
             score.setForeground(vert);
         }else{

@@ -35,9 +35,33 @@ public class Menu extends JPanel{
 
         add(fond,BorderLayout.CENTER);
 
-        //Créer les boutons des niveaux
-        JPanel panelBoutons = new JPanel(new GridLayout(0,1,5,5));
+        // structure pour stocker les boutons
+        JPanel panelBoutons = new JPanel(new GridBagLayout());
         panelBoutons.setOpaque(false); // Rendre le JPanel transparent
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        //Créer les boutons des niveaux
+        JPanel panelNiveaux = new JPanel(new GridLayout(0,2,5,5));
+        panelNiveaux.setOpaque(false); // Rendre le JPanel transparent
+
+        // Ajout des boutons au JPanel transparent
+        boutonsNiveaux = new JButton[6];
+        for (int i = 0; i < boutonsNiveaux.length; i++) {
+            int num = i + 1;
+            boutonsNiveaux[i] = new JButton("Niveau " + num);
+            boutonsNiveaux[i].addActionListener(e -> {
+                controleur.reinitialiserJeu(num, getPersonnage());
+                controleur.dispose();
+            });
+            boutonsNiveaux[i].setMargin(new Insets(4, 20, 4, 20));
+
+            panelNiveaux.add(boutonsNiveaux[i]);
+        }
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panelBoutons.add(panelNiveaux, gbc);
 
         // Bouton choix du personngae
         String[] options = {"esrapido", "totobi", "lumineau"};
@@ -53,20 +77,12 @@ public class Menu extends JPanel{
             }
         });
 
-        // Ajout des boutons au JPanel transparent
-        boutonsNiveaux = new JButton[5];
-        for (int i = 0; i < boutonsNiveaux.length; i++) {
-            int num = i + 1;
-            boutonsNiveaux[i] = new JButton("Niveau " + num);
-            boutonsNiveaux[i].addActionListener(e -> {
-                controleur.reinitialiserJeu(num, getPersonnage());
-                controleur.dispose();
-            });
-            boutonsNiveaux[i].setMargin(new Insets(4, 20, 4, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.ipady = 10;
+        panelBoutons.add(choixperso, gbc);
 
-            panelBoutons.add(boutonsNiveaux[i]);
-        }
-        panelBoutons.add(choixperso);
         fond.add(panelBoutons);
 
         afficher();
