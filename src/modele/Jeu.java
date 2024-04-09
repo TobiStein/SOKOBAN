@@ -29,21 +29,21 @@ public class Jeu extends Observable {
 
     private HashMap<Case, Point> map = new  HashMap<Case, Point>(); // permet de récupérer la position d'une case à partir de sa référence
     private Case[][] grilleEntites; // permet de récupérer une case à partir de ses coordonnées
-    private int niveau;
+    private int niv;
 
-    private Level level;
+    private Level niveau;
     private int pas;
 
 
     public Jeu() {
         try {
-            level = chargerNiveauJson("levels/level4.json");
-            SIZE_X = level.getSizeX();
-            SIZE_Y = level.getSizeY();
+            niveau = chargerNiveauJson("levels/level4.json");
+            SIZE_X = niveau.getSizeX();
+            SIZE_Y = niveau.getSizeY();
             grilleEntites = new Case[SIZE_X][SIZE_Y];
-            niveau = 1;
+            niv = 1;
             pas = 0;
-            initialisationNiveau(level);
+            initialisationNiveau(niveau);
         } catch (NullPointerException e) {
             System.out.println("Impossible de charger niveau");
         }
@@ -51,12 +51,12 @@ public class Jeu extends Observable {
 
     public Jeu(int n) {
         try {
-            level = chargerNiveauJson("levels/level"+n+".json");
-            SIZE_X = level.getSizeX();
-            SIZE_Y = level.getSizeY();
+            niveau = chargerNiveauJson("levels/level"+n+".json");
+            SIZE_X = niveau.getSizeX();
+            SIZE_Y = niveau.getSizeY();
             grilleEntites = new Case[SIZE_X][SIZE_Y];
-            niveau = n;
-            initialisationNiveau(level);
+            niv = n;
+            initialisationNiveau(niveau);
         } catch (NullPointerException e) {
             System.out.println("Impossible de charger niveau");
         }
@@ -81,9 +81,9 @@ public class Jeu extends Observable {
     }
 
     
-    private void initialisationNiveau(Level level) {
+    private void initialisationNiveau(Level n) {
         // remplit la grille de vide
-        level = level;
+        niveau = n;
         for (int x = 0; x < SIZE_X; x++){
             for (int y = 0; y < SIZE_Y; y++){
                 addCase(new Vide(this), x, y);
@@ -91,54 +91,54 @@ public class Jeu extends Observable {
         }
 
         // ajout les murs
-        List<Level.Coordinate> listeMur = level.getGetListCoordinateMur();
+        List<Level.Coordonnee> listeMur = niveau.getListeCoordMur();
         for (int m = 0; m < listeMur.size(); m++){
             addCase(new Mur(this), listeMur.get(m).getX(), listeMur.get(m).getY());
         }
 
-        listeBlocObjectif = new BlocObjectif[level.getNumObjectif()];
-        listeCaseObjectif = new CaseObjectif[level.getNumObjectif()];
+        listeBlocObjectif = new BlocObjectif[niveau.getNumObjectif()];
+        listeCaseObjectif = new CaseObjectif[niveau.getNumObjectif()];
 
         //ajout blocs objectifs
-        List<Level.Coordinate> listBlocObjectifCoor = level.getListCoordinateBlocObjectif();
-        List<Level.Coordinate> listCaseObjectifCoor = level.getListeCoordinateCaseObjectif();
+        List<Level.Coordonnee> listeBlocObjectifCoor = niveau.getListeCoordBlocObjectif();
+        List<Level.Coordonnee> listeCaseObjectifCoor = niveau.getListeCoordCaseObjectif();
 
-        for (int i = 0; i < level.getNumObjectif(); i++) {
-            listeCaseObjectif[i] = new CaseObjectif(this, listCaseObjectifCoor.get(i).getId());
-            addCase(listeCaseObjectif[i], listCaseObjectifCoor.get(i).getX(), listCaseObjectifCoor.get(i).getY());
-            listeBlocObjectif[i] = new BlocObjectif(this, grilleEntites[listBlocObjectifCoor.get(i).getX()][listBlocObjectifCoor.get(i).getY()], listBlocObjectifCoor.get(i).getId());
+        for (int i = 0; i < niveau.getNumObjectif(); i++) {
+            listeCaseObjectif[i] = new CaseObjectif(this, listeCaseObjectifCoor.get(i).getId());
+            addCase(listeCaseObjectif[i], listeCaseObjectifCoor.get(i).getX(), listeCaseObjectifCoor.get(i).getY());
+            listeBlocObjectif[i] = new BlocObjectif(this, grilleEntites[listeBlocObjectifCoor.get(i).getX()][listeBlocObjectifCoor.get(i).getY()], listeBlocObjectifCoor.get(i).getId());
         }
 
         // ajout des blocs Normaux s'il y en a
-        List<Level.Coordinate> listBlocCoor = level.getListCoordinateBloc();
+        List<Level.Coordonnee> listeBlocCoor = niveau.getListeCoordBloc();
 
-        if (listBlocCoor.size() != 0) {
-            for (int i = 0; i < listBlocCoor.size(); i++){
-                new Bloc(this, grilleEntites[listBlocCoor.get(i).getX()][listBlocCoor.get(i).getY()]);
+        if (listeBlocCoor.size() != 0) {
+            for (int i = 0; i < listeBlocCoor.size(); i++){
+                new Bloc(this, grilleEntites[listeBlocCoor.get(i).getX()][listeBlocCoor.get(i).getY()]);
             }
         }
 
         // ajout des blocs Pièges s'il y en a
-        List<Level.Coordinate> listPiegeCoor = level.getListCoordinatePiege();
+        List<Level.Coordonnee> listePiegeCoor = niveau.getListeCoordPiege();
 
-        if (listPiegeCoor.size() != 0) {
-            for (int i = 0; i < listPiegeCoor.size(); i++){
+        if (listePiegeCoor.size() != 0) {
+            for (int i = 0; i < listePiegeCoor.size(); i++){
                 Piege piege = new Piege(this);
-                addCase(piege, listPiegeCoor.get(i).getX(), listPiegeCoor.get(i).getY());
+                addCase(piege, listePiegeCoor.get(i).getX(), listePiegeCoor.get(i).getY());
             }
         }
 
         // ajout des blocs Glaces s'il y en a
-        List<Level.Coordinate> listGlaceCoor = level.getListCoordinateGlace();
+        List<Level.Coordonnee> listeGlaceCoor = niveau.getListeCoordGlace();
 
-        if (listGlaceCoor.size() != 0) {
-            for (int i = 0; i < listGlaceCoor.size(); i++){
+        if (listeGlaceCoor.size() != 0) {
+            for (int i = 0; i < listeGlaceCoor.size(); i++){
                 Glace glace = new Glace(this);
-                addCase(glace, listGlaceCoor.get(i).getX(), listGlaceCoor.get(i).getY());
+                addCase(glace, listeGlaceCoor.get(i).getX(), listeGlaceCoor.get(i).getY());
             }
         }
 
-        heros = new Heros(this, grilleEntites[level.getHero().getX()][level.getHero().getY()]);
+        heros = new Heros(this, grilleEntites[niveau.getHero().getX()][niveau.getHero().getY()]);
     }
 
     private void addCase(Case e, int x, int y) {
@@ -243,11 +243,11 @@ public class Jeu extends Observable {
     }
 
     public int getNiveau(){
-        return niveau;
+        return niv;
     }
 
     public int getPasMin(){
-        return level.getPasMinimum();
+        return niveau.getPasMinimum();
     }
 
     public int getPas(){
@@ -255,11 +255,11 @@ public class Jeu extends Observable {
     }
 
     public void updateNiveau(int n){
-        niveau = n+1;
-        level = chargerNiveauJson("levels/level"+niveau+".json");
-        SIZE_X = level.getSizeX();
-        SIZE_Y = level.getSizeY();
-        initialisationNiveau(level);
+        niv = n+1;
+        niveau = chargerNiveauJson("levels/level"+niv+".json");
+        SIZE_X = niveau.getSizeX();
+        SIZE_Y = niveau.getSizeY();
+        initialisationNiveau(niveau);
         setChanged();
         notifyObservers();
     }

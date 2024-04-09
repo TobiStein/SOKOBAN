@@ -305,7 +305,7 @@ public class VueControleur extends JFrame implements Observer {
 
         panel.add(fond, BorderLayout.CENTER);
 
-        Color colorF = Color.decode("#9F8F4B");
+        Color jaune = Color.decode("#9F8F4B");
         Font fontT = null;
         try {
             String fontPath = "Fonts/font2.ttf";
@@ -317,12 +317,12 @@ public class VueControleur extends JFrame implements Observer {
 
         JLabel texte = new JLabel("Niveau "+jeu.getNiveau()+" terminé");
         texte.setFont(fontT);
-        texte.setForeground(colorF);
+        texte.setForeground(jaune);
         texte.setHorizontalAlignment(SwingConstants.CENTER);
         fond.add(texte);
 
-        JPanel panS = new JPanel(new GridLayout(4,0));
-        panS.setOpaque(false);
+        JPanel panScore = new JPanel(new GridLayout(4,0));
+        panScore.setOpaque(false);
 
         fontT = fontT.deriveFont(Font.TRUETYPE_FONT, 18);
         Color vert = Color.decode("#089652");
@@ -339,19 +339,19 @@ public class VueControleur extends JFrame implements Observer {
         }
         score.setHorizontalAlignment(SwingConstants.CENTER);
 
-        panS.add(score);
+        panScore.add(score);
 
         JLabel minimum = new JLabel("Meilleurs pas: "+jeu.getPasMin());
         minimum.setFont(fontT);
         minimum.setForeground(Color.black);
         minimum.setHorizontalAlignment(SwingConstants.CENTER);
 
-        panS.add(minimum);
+        panScore.add(minimum);
 
         JPanel vide = new JPanel();
         vide.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0)); // Ajout de marges internes (10 pixels au-dessus et en-dessous)
         vide.setOpaque(false);
-        panS.add(vide);
+        panScore.add(vide);
 
         JPanel boutonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
         boutonsPanel.setOpaque(false);
@@ -368,9 +368,9 @@ public class VueControleur extends JFrame implements Observer {
         });
         boutonsPanel.add(rejouer);
         boutonsPanel.add(menuA);
-        panS.add(boutonsPanel, BorderLayout.SOUTH);
+        panScore.add(boutonsPanel, BorderLayout.SOUTH);
 
-        fond.add(panS);
+        fond.add(panScore);
 
         setSize(450,400);
         add(panel, BorderLayout.NORTH);
@@ -392,11 +392,10 @@ public class VueControleur extends JFrame implements Observer {
             pas.setText("Pas: " + jeu.getPas());
         });
 
-        Color color = Color.decode("#C28A37");
-        Color colorB = Color.decode("#845723");
+        Color marron = Color.decode("#845723");
 
         JButton recommencer = new JButton("Recommencer");
-        recommencer.setBorder(new LineBorder(colorB));
+        recommencer.setBorder(new LineBorder(marron));
         recommencer.setMargin(new Insets(10,4,2,4));
         recommencer.addActionListener(e -> {
             int niveau = jeu.getNiveau();
@@ -410,7 +409,7 @@ public class VueControleur extends JFrame implements Observer {
         panelJeu.add(pasMin);
 
         JButton menu = new JButton("Menu");
-        menu.setBorder(new LineBorder(colorB));
+        menu.setBorder(new LineBorder(marron));
         menu.setBorderPainted(true);
         menu.addActionListener(e -> {
             Menu menu2 = new Menu(this);

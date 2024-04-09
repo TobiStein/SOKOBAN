@@ -18,27 +18,27 @@ public class Level {
     private int pasMinimum;
 
     @JsonProperty("hero")
-    private Coordinate hero;
+    private Coordonnee hero;
 
     @JsonProperty("BlocObjectif")
-    private List<Coordinate> listCoordinateBlocObjectif;
+    private List<Coordonnee> listeCoordBlocObjectif;
 
     @JsonProperty("CaseObjectif")
-    private List<Coordinate> listeCoordinateCaseObjectif;
+    private List<Coordonnee> listeCoordCaseObjectif;
 
     @JsonProperty("Bloc")
-    private List<Coordinate> listCoordinateBloc;
+    private List<Coordonnee> listeCoordBloc;
 
     @JsonProperty("Mur")
-    private List<Coordinate> listCoordinateMur;
+    private List<Coordonnee> listeCoordMur;
 
     @JsonProperty("Piege")
-    private List<Coordinate> listCoordinatePiege;
+    private List<Coordonnee> listeCoordPiege;
 
     @JsonProperty("Glace")
-    private List<Coordinate> listCoordinateGlace;
+    private List<Coordonnee> listeCoordGlace;
 
-    public static class Coordinate {
+    public static class Coordonnee {
         @JsonProperty("x")
         private int x;
 
@@ -79,31 +79,31 @@ public class Level {
         return pasMinimum;
     }
 
-    public Coordinate getHero() {
+    public Coordonnee getHero() {
         return hero;
     }
 
-    public List<Coordinate> getListCoordinateBlocObjectif() {
-        return listCoordinateBlocObjectif;
+    public List<Coordonnee> getListeCoordBlocObjectif() {
+        return listeCoordBlocObjectif;
     }
 
-    public List<Coordinate> getListeCoordinateCaseObjectif() {
-        return listeCoordinateCaseObjectif;
+    public List<Coordonnee> getListeCoordCaseObjectif() {
+        return listeCoordCaseObjectif;
     }
 
-    public List<Coordinate> getListCoordinateBloc() {
-        return listCoordinateBloc;
+    public List<Coordonnee> getListeCoordBloc() {
+        return listeCoordBloc;
     }
 
-    public List<Coordinate> getGetListCoordinateMur() {
-        return listCoordinateMur;
+    public List<Coordonnee> getListeCoordMur() {
+        return listeCoordMur;
     }
 
-    public List<Coordinate> getListCoordinatePiege() {
-        return listCoordinatePiege;
+    public List<Coordonnee> getListeCoordPiege() {
+        return listeCoordPiege;
     }
 
-    public List<Coordinate> getListCoordinateGlace() {
-        return listCoordinateGlace;
+    public List<Coordonnee> getListeCoordGlace() {
+        return listeCoordGlace;
     }
 }
