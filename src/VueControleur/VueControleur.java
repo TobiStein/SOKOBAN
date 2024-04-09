@@ -49,15 +49,17 @@ public class VueControleur extends JFrame implements Observer {
     private ImageIcon icoPiegeouvert;
     private ImageIcon icoPiegedeactive;
     private ImageIcon icoGlace;
+    private String nomHero;
 
     private ImageIcon Menu;
     private ImageIcon bouton;
     private ImageIcon imgFinDePartie;
     private int nbPas;
+    private boolean menuAffiche = false;
 
     private JLabel[][] tabJLabel; // cases graphique (au moment du rafraichissement, chaque case va être associée à une icône, suivant ce qui est présent dans le modèle)
 
-    public VueControleur(Jeu _jeu) {
+    public VueControleur(Jeu _jeu, String joueur) {
 
         sizeX = jeu.SIZE_X;
         sizeY = _jeu.SIZE_Y;
@@ -65,7 +67,8 @@ public class VueControleur extends JFrame implements Observer {
         nbPas = jeu.getPas();
         menu = new Menu(this);
 
-        chargerLesIcones(); // met les images dans les attributs icon
+        nomHero = joueur;
+        chargerLesIcones(joueur); // met les images dans les attributs icon
 
         placerLesComposantsGraphiques();
         ajouterEcouteurClavier();
@@ -77,6 +80,7 @@ public class VueControleur extends JFrame implements Observer {
     }
 
     public void setMenu(Menu menu){
+        this.menuAffiche = true;
         this.menu = menu;
         getContentPane().add(menu, BorderLayout.NORTH);
     }
@@ -85,37 +89,37 @@ public class VueControleur extends JFrame implements Observer {
         addKeyListener(new KeyAdapter() { // new KeyAdapter() { ... } est une instance de classe anonyme, il s'agit d'un objet qui correspond au controleur dans MVC
             @Override
             public void keyPressed(KeyEvent e) {
-                switch (e.getKeyCode()) {  // on regarde quelle touche a été pressée
+                if (!menuAffiche) {
+                    switch (e.getKeyCode()) {  // on regarde quelle touche a été pressée
 
-                    case KeyEvent.VK_LEFT:
-                        jeu.deplacerHeros(Direction.gauche);
-                        nbPas++;
-                        break;
-                    case KeyEvent.VK_RIGHT:
-                        jeu.deplacerHeros(Direction.droite);
-                        nbPas++;
+                        case KeyEvent.VK_LEFT:
+                            jeu.deplacerHeros(Direction.gauche);
+                            nbPas++;
+                            break;
+                        case KeyEvent.VK_RIGHT:
+                            jeu.deplacerHeros(Direction.droite);
+                            nbPas++;
 
-                        break;
-                    case KeyEvent.VK_DOWN:
-                        jeu.deplacerHeros(Direction.bas);
-                        nbPas++;
+                            break;
+                        case KeyEvent.VK_DOWN:
+                            jeu.deplacerHeros(Direction.bas);
+                            nbPas++;
 
-                        break;
-                    case KeyEvent.VK_UP:
-                        jeu.deplacerHeros(Direction.haut);
-                        nbPas++;
+                            break;
+                        case KeyEvent.VK_UP:
+                            jeu.deplacerHeros(Direction.haut);
+                            nbPas++;
 
-                        break;
-
-
+                            break;
+                    }
                 }
             }
         });
     }
 
 
-    private void chargerLesIcones() {
-        icoHero = chargerIcone("Images/v3hero1.png");
+    private void chargerLesIcones(String joueur) {
+        icoHero = chargerIcone("Images/"+joueur+".png");
         icoVide = chargerIcone("Images/v3sol.png");
         icoMur = chargerIcone("Images/v3mur.png");
         icoBloc = chargerIcone("Images/v3bloc.png");
@@ -258,6 +262,7 @@ public class VueControleur extends JFrame implements Observer {
 
         mettreAJourAffichage();
         if (jeu.finDePartie()) {
+            nbPas++;
             System.out.println("FIN DE PARTIE");
             affFinDePartie();
 //            Timer timer = new Timer(2000, new ActionListener() {
@@ -286,14 +291,14 @@ public class VueControleur extends JFrame implements Observer {
 
     public void reinitialiserJeu(int i) {
         Jeu jeu = new Jeu(i);
-        VueControleur v = new VueControleur(jeu);
+        VueControleur v = new VueControleur(jeu, "esrapido");
         v.setVisible(true);
     }
 
-    public void niveauSuivant() {
-        int niveau = jeu.getNiveau();
-        Jeu jeu = new Jeu(niveau + 1);
-        VueControleur v = new VueControleur(jeu);
+    public void reinitialiserJeu(int i, String joueur) {
+        Jeu jeu = new Jeu(i);
+        VueControleur v = new VueControleur(jeu, joueur);
+        System.out.println("joueur modifié devenu : "+ joueur);
         v.setVisible(true);
     }
 
@@ -310,6 +315,7 @@ public class VueControleur extends JFrame implements Observer {
 
         getContentPane().removeAll();
         setTitle("Fin de partie");
+        menuAffiche = true;
 
         JPanel panel = new JPanel(new BorderLayout());
         ImageIcon imgFinDePartie= new ImageIcon("Images/finDePartie.png");
@@ -370,7 +376,7 @@ public class VueControleur extends JFrame implements Observer {
         boutonsPanel.setOpaque(false);
         JButton rejouer = new JButton("Rejouer");
         rejouer.addActionListener(e->{
-            reinitialiserJeu(jeu.getNiveau());
+            reinitialiserJeu(jeu.getNiveau(), nomHero);
             dispose();
         });
         JButton menuA = new JButton("Menu");
@@ -413,7 +419,7 @@ public class VueControleur extends JFrame implements Observer {
         recommencer.setMargin(new Insets(10,4,2,4));
         recommencer.addActionListener(e -> {
             int niveau = jeu.getNiveau();
-            reinitialiserJeu(niveau);
+            reinitialiserJeu(niveau, nomHero);
             dispose();
         });
         panelJeu.add(recommencer);

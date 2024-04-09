@@ -14,7 +14,7 @@ public class Main {
     public static void main(String[] args) {
         Jeu jeu = new Jeu(1);
 
-        VueControleur vc = new VueControleur(jeu);
+        VueControleur vc = new VueControleur(jeu, "esrapido");
         Menu menu = new Menu(vc);
         vc.setMenu(menu);
 
