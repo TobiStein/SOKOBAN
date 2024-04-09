@@ -141,7 +141,7 @@ public class VueControleur extends JFrame implements Observer {
 
         try {
             BufferedImage bufferedImage = ImageIO.read(new File(urlIcone));
-            image = bufferedImage.getScaledInstance(40, 40, Image.SCALE_DEFAULT);
+            image = bufferedImage.getScaledInstance(60, 60, Image.SCALE_DEFAULT);
         } catch (IOException ex) {
             Logger.getLogger(VueControleur.class.getName()).log(Level.SEVERE, null, ex);
             return null;
@@ -154,7 +154,7 @@ public class VueControleur extends JFrame implements Observer {
 
         getContentPane().removeAll();
         setTitle("Sokoban");
-        setSize(sizeX * 40, sizeY * 43);
+        setSize(sizeX * 60, sizeY * 65);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // permet de terminer l'application à la fermeture de la fenêtre
 
         JComponent grilleJLabels = new JPanel(new GridLayout(sizeY, sizeX)); // grilleJLabels va contenir les cases graphiques et les positionner sous la forme d'une grille
