@@ -19,7 +19,7 @@ import java.util.Observable;
 public class Jeu extends Observable {
 
     public static int SIZE_X; // 20
-    public static int SIZE_Y; // 10
+    public static int SIZE_Y;
 
 
 

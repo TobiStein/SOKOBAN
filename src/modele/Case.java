@@ -29,8 +29,6 @@ public abstract class Case extends Obj {
         e = null;
     }
 
-
-
     public Case(Jeu _jeu) {
         super(_jeu);
     }
@@ -40,9 +38,6 @@ public abstract class Case extends Obj {
     }
 
     public void setEntite(Entite _e) {
-
         e = _e;
         e.setCase(this);}
-
-
    }

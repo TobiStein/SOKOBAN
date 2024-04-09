@@ -11,7 +11,8 @@ public abstract class Entite extends Obj {
         super(_jeu);
         c = _c;
         desactive = false;
-        c.setEntite(this);}
+        c.setEntite(this);
+    }
 
     public void quitterCase() {
         c = null;
@@ -39,11 +40,11 @@ public abstract class Entite extends Obj {
         return jeu.deplacerEntite(this, d);
     }
 
-    public void setDesactive(boolean deactive) {
-        this.desactive = deactive;
+    public void setDesactive(boolean _desactive) {
+        this.desactive = _desactive;
     }
 
-    public boolean isDesactive() {
+    public boolean estDesactive() {
         return desactive;
     }
 

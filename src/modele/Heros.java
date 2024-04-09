@@ -13,6 +13,4 @@ public class Heros extends Entite
     public Heros(Jeu _jeu, Case c) {
         super(_jeu, c);
     }
-
-
 }

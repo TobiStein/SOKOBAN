@@ -8,12 +8,10 @@ public class Bloc extends Entite {
     }
 
     public boolean pousser(Direction d) {
-        if (!this.isDesactive()) {
+        if (!this.estDesactive()) {
             return jeu.deplacerEntite(this, d);
         } else {
             return false;
         }
     }
-
-
 }

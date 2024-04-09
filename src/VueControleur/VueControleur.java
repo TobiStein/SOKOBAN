@@ -6,8 +6,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -94,22 +92,18 @@ public class VueControleur extends JFrame implements Observer {
 
                         case KeyEvent.VK_LEFT:
                             jeu.deplacerHeros(Direction.gauche);
-                            nbPas++;
                             break;
+
                         case KeyEvent.VK_RIGHT:
                             jeu.deplacerHeros(Direction.droite);
-                            nbPas++;
-
                             break;
+
                         case KeyEvent.VK_DOWN:
                             jeu.deplacerHeros(Direction.bas);
-                            nbPas++;
-
                             break;
+
                         case KeyEvent.VK_UP:
                             jeu.deplacerHeros(Direction.haut);
-                            nbPas++;
-
                             break;
                     }
                 }
@@ -191,7 +185,7 @@ public class VueControleur extends JFrame implements Observer {
 
                     Entite e = c.getEntite();
 
-                    if (e != null && !e.isDesactive()) {
+                    if (e != null && !e.estDesactive()) {
                         if (c.getEntite() instanceof Heros) {
                             tabJLabel[x][y].setIcon(icoHero);
                         } else if (c.getEntite() instanceof BlocObjectif) {
@@ -350,10 +344,10 @@ public class VueControleur extends JFrame implements Observer {
         JLabel score= new JLabel();
         score.setFont(fontT);
         if (score()){
-            score.setText("Vos pas: "+nbPas);
+            score.setText("Vos pas: "+jeu.getPas());
             score.setForeground(vert);
         }else{
-            score.setText("Vos pas: "+nbPas);
+            score.setText("Vos pas: "+jeu.getPas());
             score.setForeground(rouge);
         }
         score.setHorizontalAlignment(SwingConstants.CENTER);
@@ -403,7 +397,7 @@ public class VueControleur extends JFrame implements Observer {
         panelJeu.setLayout(new GridLayout(2,2,20,8));
         panelJeu.setBackground(Color.WHITE);
 
-        JLabel pas = new JLabel("Pas: "+ nbPas);
+        JLabel pas = new JLabel("Pas: "+ jeu.getPas());
         pas.setFont(new Font("Monospace", Font.ITALIC+Font.BOLD, 14));
         panelJeu.add(pas);
 
