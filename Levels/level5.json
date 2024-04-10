@@ -1,6 +1,6 @@
 {   
     "SIZE_X": 7,
-    "SIZE_Y": 7,
+    "SIZE_Y": 5,
     "numObjectif": 1,
     "pasMinimum": 8,
     "hero":
@@ -22,5 +22,7 @@
     ],
     "Glace": [
         {"x": 3, "y": 1}, {"x": 3, "y": 2}
+    ],
+    "Rail": [
     ]
 }

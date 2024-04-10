@@ -45,7 +45,7 @@ public class Menu extends JPanel{
         panelNiveaux.setOpaque(false); // Rendre le JPanel transparent
 
         // Ajout des boutons au JPanel transparent
-        boutonsNiveaux = new JButton[6];
+        boutonsNiveaux = new JButton[8];
         for (int i = 0; i < boutonsNiveaux.length; i++) {
             int num = i + 1;
             boutonsNiveaux[i] = new JButton("Niveau " + num);
@@ -73,7 +73,6 @@ public class Menu extends JPanel{
             public void actionPerformed(ActionEvent e) {
                 // Récupérer l'option sélectionnée
                 setPersonnage((String) choixperso.getSelectedItem());
-                System.out.println("Option sélectionnée : " + personnage);
             }
         });
 

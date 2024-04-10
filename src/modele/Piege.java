@@ -11,7 +11,7 @@ public class Piege extends Case{
     }
 
     @Override
-    public boolean peutQuitterLaCase(){
+    public boolean peutQuitterLaCase(Direction d){
         if (!ouvert) {
             ouvert = true;
             return true;
@@ -26,7 +26,6 @@ public class Piege extends Case{
         if(ouvert && !deactive){
             e.setDesactive(true);
             if (e instanceof Bloc || e instanceof  BlocObjectif) {
-                System.out.println("Piege déactivé");
                 deactive = true;
             }
         }
@@ -45,5 +44,9 @@ public class Piege extends Case{
 
     public boolean isDeactive() {
         return deactive;
+    }
+
+    public void setOuvert(boolean ouvert) {
+        this.ouvert = ouvert;
     }
 }

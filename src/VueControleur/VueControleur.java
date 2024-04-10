@@ -47,6 +47,12 @@ public class VueControleur extends JFrame implements Observer {
     private ImageIcon icoPiegeouvert;
     private ImageIcon icoPiegedeactive;
     private ImageIcon icoGlace;
+    private ImageIcon icoRailabd;
+    private ImageIcon icoRailabg;
+    private ImageIcon icoRailahd;
+    private ImageIcon icoRailahg;
+    private ImageIcon icoRailVertical;
+    private ImageIcon icoRailHorizontal;
     private String nomHero;
 
     private ImageIcon Menu;
@@ -129,6 +135,12 @@ public class VueControleur extends JFrame implements Observer {
         icoCaseObj5 = chargerIcone("Images/v3case_objectif5.png");
         icoPiegeferme = chargerIcone("Images/v3piegeferme.png");
         icoPiegeouvert = chargerIcone("Images/v3piegeouvert.png");
+        icoRailabd = chargerIcone("Images/rail_angle_bas_droit.png");
+        icoRailabg = chargerIcone("Images/rail_angle_bas_gauche.png");
+        icoRailahd = chargerIcone("Images/rail_angle_haut_droit.png");
+        icoRailahg = chargerIcone("Images/rail_angle_haut_gauche.png");
+        icoRailVertical = chargerIcone("Images/rail_vertical.png");
+        icoRailHorizontal = chargerIcone("Images/rail_horizontal.png");
         icoGlace = chargerIcone("Images/v2glace.png");
         icoPiegedeactive = chargerIcone("Images/v3piegedeactive.png");
         Menu = chargerIcone("Images/SOKOBAN.png");
@@ -244,6 +256,27 @@ public class VueControleur extends JFrame implements Observer {
                             }
                         } else if (jeu.getGrille()[x][y] instanceof Glace) {
                             tabJLabel[x][y].setIcon(icoGlace);
+                        } else if (jeu.getGrille()[x][y] instanceof Rail) {
+                            switch (((Rail) jeu.getGrille()[x][y]).getType()){
+                                case "vertical":
+                                    tabJLabel[x][y].setIcon(icoRailVertical);
+                                    break;
+                                case "horizontal":
+                                    tabJLabel[x][y].setIcon(icoRailHorizontal);
+                                    break;
+                                case "angle_bas_droit":
+                                    tabJLabel[x][y].setIcon(icoRailabd);
+                                    break;
+                                case "angle_bas_gauche":
+                                    tabJLabel[x][y].setIcon(icoRailabg);
+                                    break;
+                                case "angle_haut_droit":
+                                    tabJLabel[x][y].setIcon(icoRailahd);
+                                    break;
+                                case "angle_haut_gauche":
+                                    tabJLabel[x][y].setIcon(icoRailahg);
+                                    break;
+                            }
                         }
                     }
                 }
@@ -262,7 +295,6 @@ public class VueControleur extends JFrame implements Observer {
                 mettreAJourAffichage();
                 if (jeu.finDePartie()) {
                     nbPas = jeu.getPas();
-                    System.out.println("FIN DE PARTIE");
                     affFinDePartie();
                 }
             }
@@ -278,13 +310,11 @@ public class VueControleur extends JFrame implements Observer {
     public void reinitialiserJeu(int i, String joueur) {
         Jeu jeu = new Jeu(i);
         VueControleur v = new VueControleur(jeu, joueur);
-        System.out.println("joueur modifié devenu : "+ joueur);
         v.setVisible(true);
     }
 
     public boolean score(){
         int pasMin = jeu.getPasMin();
-        System.out.println("Nombre de pas dans score : "+nbPas);
         if(nbPas>pasMin){
             return false;
         }

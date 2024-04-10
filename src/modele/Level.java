@@ -38,6 +38,9 @@ public class Level {
     @JsonProperty("Glace")
     private List<Coordonnee> listeCoordGlace;
 
+    @JsonProperty("Rail")
+    private List<Coordonnee> listeCoordRails;
+
     public static class Coordonnee {
         @JsonProperty("x")
         private int x;
@@ -47,6 +50,12 @@ public class Level {
 
         @JsonProperty("id")
         private int id;
+
+        @JsonProperty("type")
+        private String type;
+
+        @JsonProperty("ouvert")
+        private boolean ouvert;
 
         // getters and setters
 
@@ -60,6 +69,14 @@ public class Level {
 
         public int getId() { // And this method
             return id;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public boolean isOuvert() {
+            return ouvert;
         }
     }
 
@@ -105,5 +122,9 @@ public class Level {
 
     public List<Coordonnee> getListeCoordGlace() {
         return listeCoordGlace;
+    }
+
+    public List<Coordonnee> getListeCoordRails() {
+        return listeCoordRails;
     }
 }

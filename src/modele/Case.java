@@ -10,7 +10,7 @@ public abstract class Case extends Obj {
     protected Entite e;
     public abstract boolean peutEtreParcouru();
 
-    public boolean peutQuitterLaCase() {
+    public boolean peutQuitterLaCase(Direction d) {
         return true;
     }
 
@@ -18,7 +18,7 @@ public abstract class Case extends Obj {
     public boolean entrerSurLaCase(Entite e, Direction d) {
 
         Case c = e.getCase();
-        if (c !=null && c.peutQuitterLaCase()) {
+        if (c !=null && c.peutQuitterLaCase(d)) {
             c.quitterLaCase();
             setEntite(e);
         }

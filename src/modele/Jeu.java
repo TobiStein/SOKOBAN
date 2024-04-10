@@ -51,7 +51,7 @@ public class Jeu extends Observable {
 
     public Jeu(int n) {
         try {
-            niveau = chargerNiveauJson("levels/level"+n+".json");
+            niveau = chargerNiveauJson("Levels/level"+n+".json");
             SIZE_X = niveau.getSizeX();
             SIZE_Y = niveau.getSizeY();
             grilleEntites = new Case[SIZE_X][SIZE_Y];
@@ -75,7 +75,6 @@ public class Jeu extends Observable {
     public void deplacerHeros(Direction d) {
         heros.avancerDirectionChoisie(d);
         pas++;
-        System.out.println(pas);
         setChanged(); //
         notifyObservers();
     }
@@ -118,23 +117,36 @@ public class Jeu extends Observable {
             }
         }
 
-        // ajout des blocs Pièges s'il y en a
+        // ajout des cases Pièges s'il y en a
         List<Level.Coordonnee> listePiegeCoor = niveau.getListeCoordPiege();
 
         if (listePiegeCoor.size() != 0) {
             for (int i = 0; i < listePiegeCoor.size(); i++){
                 Piege piege = new Piege(this);
                 addCase(piege, listePiegeCoor.get(i).getX(), listePiegeCoor.get(i).getY());
+                if (listePiegeCoor.get(i).isOuvert()){
+                    piege.setOuvert(true);
+                }
             }
         }
 
-        // ajout des blocs Glaces s'il y en a
+        // ajout des cases Glaces s'il y en a
         List<Level.Coordonnee> listeGlaceCoor = niveau.getListeCoordGlace();
 
         if (listeGlaceCoor.size() != 0) {
             for (int i = 0; i < listeGlaceCoor.size(); i++){
                 Glace glace = new Glace(this);
                 addCase(glace, listeGlaceCoor.get(i).getX(), listeGlaceCoor.get(i).getY());
+            }
+        }
+
+        // ajout des cases Rails s'il y en a
+        List<Level.Coordonnee> listeRails = niveau.getListeCoordRails();
+
+        if (listeRails.size() != 0) {
+            for (int i = 0; i < listeRails.size(); i++){
+                Rail rail = new Rail(this, listeRails.get(i).getType());
+                addCase(rail, listeRails.get(i).getX(), listeRails.get(i).getY());
             }
         }
 
@@ -175,11 +187,6 @@ public class Jeu extends Observable {
             // si la case est libérée
             if (caseALaPosition(pCible).peutEtreParcouru()) {
                 caseALaPosition(pCible).entrerSurLaCase(e, d);
-//                if (caseALaPosition(pCible) instanceof Glace){
-//                    eCible.glisser(d);
-//                    pCible = calculerPointCible(pCible, d);
-//                }
-
             } else {
                 retour = false;
             }
