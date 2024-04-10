@@ -54,6 +54,10 @@ Ajoutez la dépendance suivante à votre fichier `pom.xml` :
 
 ## Création de votre propre niveau
 
+- Les niveaux sont rangé dans `Levels`. 
+- Le nom du fichier doit être sous la forme `level{numéro du niveau}.json`. 
+- Une fois votre niveau ajouté à `Levels`, pensez à modifier `src/VueController/Menu.java` la ligne `boutonsNiveaux = new JButton[8];` pour qu'à la place du 8 il y ai le nombre total de niveaux.
+
 Utilisez ce modèle de fichier JSON pour créer vos propres niveaux (⚠️ ne supprimez aucune section ⚠️) :
 
 ```json
